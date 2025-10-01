@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block auth_content %}
+<div class="content-card p-4 mb-4">
+    <h1 class="text-warning"><i class="bi bi-code-slash me-2"></i>Software Development</h1>
+    <p class="lead">Master backend, frontend, and full-stack development with real-world projects.</p>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4 mb-4">
+        <div class="content-card p-4 h-100 text-center">
+            <i class="bi bi-braces-asterisk text-primary display-4 mb-3"></i>
+            <h4>Frontend Development</h4>
+            <p>Learn modern UI frameworks like React, Vue, and Angular with responsive design.</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="content-card p-4 h-100 text-center">
+            <i class="bi bi-hdd-stack-fill text-success display-4 mb-3"></i>
+            <h4>Backend Development</h4>
+            <p>Build scalable APIs and services with Django, Flask, and Node.js.</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="content-card p-4 h-100 text-center">
+            <i class="bi bi-layers-fill text-danger display-4 mb-3"></i>
+            <h4>Full-Stack Projects</h4>
+            <p>Combine frontend and backend skills to deliver complete production-ready apps.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block guest_content %}
+<div class="content-card p-4 text-center">
+    <i class="bi bi-code-slash display-4 text-warning mb-3"></i>
+    <h2 class="text-warning">Software Development</h2>
+    <p class="lead text-light">Explore how modern apps are built — from frontend to backend.</p>
+    <p class="small text-muted">Login to unlock full training and real-world projects.</p>
+</div>
+{% endblock %}

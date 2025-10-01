@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block auth_content %}
+<div class="content-card p-4 mb-4">
+    <h1 class="text-info"><i class="bi bi-journal-code me-2"></i>Courses</h1>
+    <p class="lead">Browse our hands-on training paths in Cybersecurity, Software Development, Cloud, and DevOps.</p>
+</div>
+
+<!-- Search & Filters -->
+<div class="content-card p-3 mb-4">
+    <form method="get" class="row g-2 align-items-center">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input name="q" value="{{ request.GET.q }}" type="search" class="form-control" placeholder="Search courses (e.g. Django, SQL Injection, DevOps)">
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <select name="category" class="form-select">
+                <option value="">All categories</option>
+                <option value="cybersecurity" {% if request.GET.category == 'cybersecurity' %}selected{% endif %}>Cybersecurity</option>
+                <option value="software" {% if request.GET.category == 'software' %}selected{% endif %}>Software Development</option>
+                <option value="cloud" {% if request.GET.category == 'cloud' %}selected{% endif %}>Cloud</option>
+                <option value="devops" {% if request.GET.category == 'devops' %}selected{% endif %}>DevOps</option>
+            </select>
+        </div>
+
+        <div class="col-md-3 text-end">
+            <button class="btn btn-outline-info" type="submit"><i class="bi bi-funnel-fill me-2"></i>Filter</button>
+        </div>
+    </form>
+</div>
+
+<!-- Courses Grid -->
+<div class="row">
+    {% if courses %}
+        {% for course in courses %}
+            <div class="col-md-4 mb-4">
+                <div class="content-card p-4 h-100 d-flex flex-column">
+                    <div class="mb-3 text-center">
+                        {% if course.icon_class %}
+                            <i class="{{ course.icon_class }} display-4 mb-2"></i>
+                        {% else %}
+                            <i class="bi bi-book-fill display-4 mb-2"></i>
+                        {% endif %}
+                    </div>
+
+                    <h5 class="mb-2 text-center">{{ course.title }}</h5>
+                    <p class="flex-grow-1 text-center small">{{ course.short_description }}</p>
+
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <small class="text-muted">
+                            {% if course.difficulty %}{{ course.difficulty|title }}{% else %}Beginner{% endif %}
+                        </small>
+                        <div>
+                            <a href="{{ course.get_absolute_url }}" class="btn btn-sm btn-outline-info">
+                                <i class="bi bi-arrow-right-circle me-1"></i> View
+                            </a>
+                            {% if course.enroll_url %}
+                                <a href="{{ course.enroll_url }}" class="btn btn-sm btn-info text-white ms-1">
+                                    <i class="bi bi-person-plus me-1"></i> Enroll
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <!-- Static fallback if no courses -->
+        <div class="col-md-4 mb-4">
+            <div class="content-card p-4 h-100 text-center">
+                <i class="bi bi-shield-check display-4 mb-3 text-success"></i>
+                <h4>Ethical Hacking</h4>
+                <p>Hands-on penetration testing labs, recon, exploitation, and reporting.</p>
+                <a href="{% url 'cybersecurity' %}" class="btn btn-sm btn-outline-success mt-3">Learn more</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="content-card p-4 h-100 text-center">
+                <i class="bi bi-database-fill display-4 mb-3 text-danger"></i>
+                <h4>SQL Injection</h4>
+                <p>Identify, exploit and remediate SQLi vulnerabilities in web apps and APIs.</p>
+                <a href="#" class="btn btn-sm btn-outline-danger mt-3">Start lab</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="content-card p-4 h-100 text-center">
+                <i class="bi bi-code-square display-4 mb-3 text-warning"></i>
+                <h4>Django & APIs</h4>
+                <p>Build secure REST APIs with Django REST Framework and JWT auth.</p>
+                <a href="{% url 'courses' %}" class="btn btn-sm btn-outline-warning mt-3">View course</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="content-card p-4 h-100 text-center">
+                <i class="bi bi-cloud-shield-fill display-4 mb-3 text-info"></i>
+                <h4>Cloud Security</h4>
+                <p>Secure AWS/Azure/GCP workloads, IAM, and cloud-native defenses.</p>
+                <a href="{% url 'cloud' %}" class="btn btn-sm btn-outline-info mt-3">Explore</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="content-card p-4 h-100 text-center">
+                <i class="bi bi-git display-4 mb-3 text-primary"></i>
+                <h4>DevOps & CI/CD</h4>
+                <p>Docker, Kubernetes basics, and pipeline automation with GitHub Actions.</p>
+                <a href="#" class="btn btn-sm btn-outline-primary mt-3">Details</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="content-card p-4 h-100 text-center">
+                <i class="bi bi-shield-lock-fill display-4 mb-3 text-secondary"></i>
+                <h4>API Security</h4>
+                <p>Threat modelling, auth/authorization, rate-limiting and secure design patterns.</p>
+                <a href="#" class="btn btn-sm btn-outline-secondary mt-3">Learn more</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Pagination -->
+{% if page_obj %}
+<nav aria-label="Courses pagination" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?q={{ request.GET.q }}&category={{ request.GET.category }}&page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        {% endif %}
+
+        <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?q={{ request.GET.q }}&category={{ request.GET.category }}&page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+<br>
+
+{% endblock %}
+
+{% block guest_content %}
+<div class="content-card p-4 mb-4 shadow-sm rounded">   
+    <h1 class="text-info glow-hover pulse">
+        <i class="bi bi-journal-code me-2"></i>Explore Our Courses
+    </h1>
+    <p class="lead mt-2 text-light">Browse our hands-on training paths in Cybersecurity, Software Development, Cloud, and DevOps.</p>
+</div>
+{% endblock %}
+

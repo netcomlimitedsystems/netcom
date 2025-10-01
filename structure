@@ -1,0 +1,22 @@
+netcom/
+│── netcom/                 # Django project root
+│   ├── settings.py
+│   ├── urls.py
+│   └── ...
+│
+│── core/                   # Main app
+│   ├── templates/
+│   │   ├── base.html
+│   │   ├── home.html
+│   │   ├── courses.html
+│   │   ├── blog.html
+│   │   ├── cybersecurity.html
+│   │   ├── software.html
+│   │   └── profile.html
+│   └── views.py
+│
+│── static/
+│   ├── images/
+│   │   └── logo.png
+│   └── css/
+│       └── custom.css

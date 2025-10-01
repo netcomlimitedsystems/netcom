@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-5">
+    <!-- Title -->
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="fw-bold text-primary">
+                <i class="bi bi-speedometer2 me-2"></i> Admin Dashboard
+            </h1>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card text-center shadow border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Users</h6>
+                    <h2 class="fw-bold text-primary">{{ users_count }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Courses</h6>
+                    <h2 class="fw-bold text-success">{{ courses_count }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Enrollments</h6>
+                    <h2 class="fw-bold text-warning">{{ enrollments_count }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow border-0">
+                <div class="card-body">
+                    <h6 class="text-muted">Blogs</h6>
+                    <h2 class="fw-bold text-danger">{{ blogs_count }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    Courses by Category
+                </div>
+                <div class="card-body">
+                    <canvas id="courseCategoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    Enrollments Over Time
+                </div>
+                <div class="card-body">
+                    <canvas id="enrollmentsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // Courses by Category
+    new Chart(document.getElementById("courseCategoryChart"), {
+        type: "doughnut",
+        data: {
+            labels: {{ course_categories.labels|safe }},
+            datasets: [{
+                data: {{ course_categories.data|safe }},
+                backgroundColor: ["#0d6efd","#198754","#ffc107","#dc3545"],
+                borderWidth: 1
+            }]
+        }
+    });
+
+    // Enrollments Over Time
+    new Chart(document.getElementById("enrollmentsChart"), {
+        type: "line",
+        data: {
+            labels: {{ enrollments_over_time.labels|safe }},
+            datasets: [{
+                label: "Enrollments",
+                data: {{ enrollments_over_time.data|safe }},
+                borderColor: "#198754",
+                backgroundColor: "rgba(25, 135, 84, 0.2)",
+                fill: true,
+                tension: 0.3
+            }]
+        }
+    });
+});
+</script>
+{% endblock %}

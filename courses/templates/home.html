@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block guest_content %}
+<div class="content-card p-4 mb-4 shadow-sm rounded">
+    <h1 class="text-info glow-hover pulse">
+        <i class="bi bi-house-door-fill me-2"></i>Welcome to Netcom Learning
+    </h1>
+    <p class="lead mt-2 text-light">Explore our training programs, blogs, and tools to build your career.</p>
+</div>
+
+<div class="row mt-4">
+    <!-- Cybersecurity -->
+    <div class="col-md-6 mb-4">
+        <div class="content-card p-4 h-100 text-center shadow-sm rounded">
+            <i class="bi bi-shield-lock-fill text-danger display-4 mb-3 glow-red pulse"></i>
+            <h4 class="fw-bold text-light glow-red pulse">Cybersecurity Courses</h4>
+            <p class="text-secondary">Hands-on training in ethical hacking, risk management, and defense strategies.</p>
+            <a href="{% url 'cybersecurity' %}" class="btn btn-outline-danger mt-2 btn-glow-red ripple-btn">
+                Learn More <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Software Development -->
+    <div class="col-md-6 mb-4">
+        <div class="content-card p-4 h-100 text-center shadow-sm rounded">
+            <i class="bi bi-code-slash text-warning display-4 mb-3 glow-yellow pulse"></i>
+            <h4 class="fw-bold text-light glow-yellow pulse">Software Development</h4>
+            <p class="text-secondary">Master backend, frontend, and fullstack with real-world projects.</p>
+            <a href="{% url 'software' %}" class="btn btn-outline-warning mt-2 btn-glow-yellow ripple-btn">
+                Learn More <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Blog + Courses Quick Links -->
+<div class="row mt-4">
+    <div class="col-md-6 mb-4">
+        <div class="content-card p-4 h-100 text-center shadow-sm rounded">
+            <i class="bi bi-journal-text text-primary display-4 mb-3 glow-blue pulse"></i>
+            <h4 class="fw-bold text-light glow-blue pulse">Read Our Blog</h4>
+            <p class="text-secondary">Stay updated with the latest trends in tech, coding, and cybersecurity.</p>
+            <a href="{% url 'blog' %}" class="btn btn-outline-primary mt-2 btn-glow-blue ripple-btn">
+                Visit Blog <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="content-card p-4 h-100 text-center shadow-sm rounded">
+            <i class="bi bi-journal-code text-success display-4 mb-3 glow-green pulse"></i>
+            <h4 class="fw-bold text-light glow-green pulse">Explore Courses</h4>
+            <p class="text-secondary">Check out our wide range of programs designed for professionals and students.</p>
+            <a href="{% url 'courses' %}" class="btn btn-outline-success mt-2 btn-glow-green ripple-btn">
+                Explore <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block auth_content %}
+<div class="content-card p-4 mb-4 shadow-sm rounded">
+    <h1 class="text-success glow-green pulse">
+        <i class="bi bi-house-door-fill me-2"></i>Welcome back, {{ user.username }}!
+    </h1>
+    <p class="lead mt-2 text-light">Continue learning, explore advanced tools, and check your dashboard.</p>
+</div>
+
+<div class="row mt-4">
+    <!-- Courses -->
+    <div class="col-md-6 mb-4">
+        <div class="content-card p-4 h-100 text-center shadow-sm rounded">
+            <i class="bi bi-journal-code text-info display-4 mb-3 glow-blue pulse"></i>
+            <h4 class="fw-bold text-light glow-blue pulse">My Courses</h4>
+            <p class="text-secondary">Access your enrolled programs and continue where you left off.</p>
+            <a href="{% url 'courses' %}" class="btn btn-outline-info mt-2 btn-glow-blue ripple-btn">
+                Go to Courses <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Profile -->
+    <div class="col-md-6 mb-4">
+        <div class="content-card p-4 h-100 text-center shadow-sm rounded">
+            <i class="bi bi-person-circle text-warning display-4 mb-3 glow-yellow pulse"></i>
+            <h4 class="fw-bold text-light glow-yellow pulse">My Profile</h4>
+            <p class="text-secondary">Manage your account, update details, and track progress.</p>
+            <a href="{% url 'profile' %}" class="btn btn-outline-warning mt-2 btn-glow-yellow ripple-btn">
+                View Profile <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Glow colors */
+    .glow-red { color: #ff4d4d; }
+    .glow-yellow { color: #ffd633; }
+    .glow-blue { color: #33ccff; }
+    .glow-green { color: #66ff66; }
+
+    /* Glow hover */
+    .glow-red:hover { text-shadow: 0 0 10px #ff4d4d, 0 0 20px #ff1a1a; }
+    .glow-yellow:hover { text-shadow: 0 0 10px #ffd633, 0 0 20px #ffcc00; }
+    .glow-blue:hover { text-shadow: 0 0 10px #33ccff, 0 0 20px #1aa3ff; }
+    .glow-green:hover { text-shadow: 0 0 10px #66ff66, 0 0 20px #33cc33; }
+    .glow-hover:hover { text-shadow: 0 0 10px #66ffff, 0 0 20px #33cccc; }
+
+    /* Pulse animation */
+    .pulse {
+        animation: pulseGlow 2.5s infinite alternate;
+    }
+    @keyframes pulseGlow {
+        0% { text-shadow: 0 0 5px currentColor, 0 0 10px currentColor; }
+        100% { text-shadow: 0 0 20px currentColor, 0 0 40px currentColor; }
+    }
+
+    /* Button pulse glows */
+    .btn-glow-red { animation: pulseBtnRed 2.5s infinite alternate; }
+    .btn-glow-yellow { animation: pulseBtnYellow 2.5s infinite alternate; }
+    .btn-glow-blue { animation: pulseBtnBlue 2.5s infinite alternate; }
+    .btn-glow-green { animation: pulseBtnGreen 2.5s infinite alternate; }
+
+    @keyframes pulseBtnRed { 0% { box-shadow: 0 0 5px #ff4d4d; } 100% { box-shadow: 0 0 20px #ff1a1a; } }
+    @keyframes pulseBtnYellow { 0% { box-shadow: 0 0 5px #ffd633; } 100% { box-shadow: 0 0 20px #ffcc00; } }
+    @keyframes pulseBtnBlue { 0% { box-shadow: 0 0 5px #33ccff; } 100% { box-shadow: 0 0 20px #1aa3ff; } }
+    @keyframes pulseBtnGreen { 0% { box-shadow: 0 0 5px #66ff66; } 100% { box-shadow: 0 0 20px #33cc33; } }
+
+    /* Ripple effect */
+    .ripple-btn {
+        position: relative;
+        overflow: hidden;
+    }
+    .ripple-btn::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        transform: scale(0);
+        background: rgba(255, 255, 255, 0.4);
+        width: 100px;
+        height: 100px;
+        opacity: 0;
+        pointer-events: none;
+    }
+    .ripple-btn:active::after {
+        transform: scale(4);
+        opacity: 0;
+        transition: transform 0.6s, opacity 0.6s;
+        left: var(--ripple-x);
+        top: var(--ripple-y);
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Ripple effect handler
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".ripple-btn").forEach(btn => {
+            btn.addEventListener("click", function(e) {
+                let rect = this.getBoundingClientRect();
+                this.style.setProperty("--ripple-x", `${e.clientX - rect.left - 50}px`);
+                this.style.setProperty("--ripple-y", `${e.clientY - rect.top - 50}px`);
+            });
+        });
+    });
+</script>
+{% endblock %}

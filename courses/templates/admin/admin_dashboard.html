@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block admin_content %}
+<div class="container mt-4">
+
+    <h2 class="text-primary mb-4"><i class="bi bi-speedometer2 me-2"></i> Administration Dashboard</h2>
+
+    <!-- Stats Cards -->
+    <div class="row">
+        <div class="col-md-2"><div class="card p-3 text-center shadow"><h4>{{ stats.users }}</h4><p>Users</p></div></div>
+        <div class="col-md-2"><div class="card p-3 text-center shadow"><h4>{{ stats.courses }}</h4><p>Courses</p></div></div>
+        <div class="col-md-2"><div class="card p-3 text-center shadow"><h4>{{ stats.lessons }}</h4><p>Lessons</p></div></div>
+        <div class="col-md-3"><div class="card p-3 text-center shadow"><h4>{{ stats.enrollments }}</h4><p>Enrollments</p></div></div>
+        <div class="col-md-3"><div class="card p-3 text-center shadow"><h4>{{ stats.blogs }}</h4><p>Blogs</p></div></div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <h5 class="text-info"><i class="bi bi-book-half me-2"></i>Recent Courses</h5>
+            <ul class="list-group">
+                {% for course in recent_courses %}
+                    <li class="list-group-item">{{ course.title }} <small class="text-muted">({{ course.created_at|date:"M d" }})</small></li>
+                {% empty %}
+                    <li class="list-group-item text-muted">No courses yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h5 class="text-success"><i class="bi bi-people-fill me-2"></i>Recent Enrollments</h5>
+            <ul class="list-group">
+                {% for e in recent_enrollments %}
+                    <li class="list-group-item">{{ e.user.username }} → {{ e.course.title }}</li>
+                {% empty %}
+                    <li class="list-group-item text-muted">No enrollments yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h5 class="text-warning"><i class="bi bi-newspaper me-2"></i>Recent Blogs</h5>
+            <ul class="list-group">
+                {% for blog in recent_blogs %}
+                    <li class="list-group-item">{{ blog.title }}</li>
+                {% empty %}
+                    <li class="list-group-item text-muted">No blog posts yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Chart.js Example -->
+    <div class="mt-5">
+        <h4 class="text-primary">Top 5 Popular Courses</h4>
+        <canvas id="courseChart"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('courseChart').getContext('2d');
+    const courseChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [{% for c in course_popularity %}'{{ c.title }}',{% endfor %}],
+            datasets: [{
+                label: 'Enrollments',
+                data: [{% for c in course_popularity %}{{ c.enroll_count }},{% endfor %}],
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    });
+</script>
+{% endblock %}

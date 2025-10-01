@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block auth_content %}
+<div class="content-card p-4 mb-4">
+    <h1 class="text-info"><i class="bi bi-cloud-shield-fill me-2"></i>Cloud</h1>
+    <p class="lead">Secure and scale apps across AWS, Azure, and Google Cloud.</p>
+</div>
+
+<div class="row">
+    {% if courses %}
+        {% for course in courses %}
+            <div class="col-md-4 mb-4">
+                <div class="content-card p-4 h-100 d-flex flex-column text-center">
+                    <i class="{{ course.icon_class|default:'bi bi-cloud-fill' }} display-4 mb-2 text-info"></i>
+                    <h5 class="mb-2">{{ course.title }}</h5>
+                    <p class="small flex-grow-1">{{ course.short_description }}</p>
+                    <a href="{{ course.get_absolute_url }}" class="btn btn-sm btn-outline-info mt-3">
+                        <i class="bi bi-arrow-right-circle me-1"></i> View Course
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12">
+            <div class="content-card p-5 text-center">
+                <i class="bi bi-emoji-frown display-4 text-muted mb-3"></i>
+                <h5>No cloud courses available yet.</h5>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block guest_content %}
+<div class="content-card p-4 text-center">
+    <i class="bi bi-cloud-shield-fill display-4 text-info mb-3"></i>
+    <h2 class="text-info">Cloud Security Training</h2>
+    <p class="lead text-light">Protect workloads, IAM, and infrastructure in AWS, Azure, and GCP.</p>
+</div>
+{% endblock %}

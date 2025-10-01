@@ -1,0 +1,164 @@
+{% load static %}
+{% load auth_links %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netcom Limited Systems</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Custom CSS -->
+    <style>
+        body { background-color: #0d1117; color: #e6edf3; overflow-x: hidden; }
+        .navbar { background-color: #161b22; position: relative; z-index: 100; }
+        .sidebar { min-height: 100vh; background-color: rgba(13, 17, 23, 0.9); border-right: 1px solid #21262d; position: relative; z-index: 50; }
+        .sidebar .nav-link { color: #e6edf3; transition: all 0.3s ease; }
+        .sidebar .nav-link:hover { color: #58a6ff; transform: translateX(5px); }
+        .logo { max-height: 50px; }
+        .content { padding: 20px; position: relative; z-index: 10; }
+        .nav-link.active { background-color: rgba(88, 166, 255, 0.15); border: 1px solid #58a6ff; color: #58a6ff !important; font-weight: bold; }
+        a{text-decoration: none;}
+        
+        /* User profile (top-right) */
+        .user-profile { display: flex; align-items: center; gap: 10px; }
+        .user-profile img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #58a6ff; }
+        .user-profile span { font-weight: 500; color: #e6edf3; }
+
+        /* Background effects */
+        .animated-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; overflow: hidden; }
+        .particle { position: absolute; border-radius: 50%; background: rgba(88,166,255,0.1); animation: floatParticle 20s infinite linear; }
+        .binary-rain { position: absolute; color: rgba(46,160,67,0.3); font-family: 'Courier New', monospace; font-size: 14px; animation: rainFall 15s infinite linear; user-select: none; }
+        .grid-line { position: absolute; background: linear-gradient(90deg, transparent, rgba(88,166,255,0.1), transparent); animation: gridMove 25s infinite linear; }
+        .pulse-orb { position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); animation: pulseOrb 8s infinite ease-in-out; }
+        .scan-line { position: absolute; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, rgba(46,160,67,0.6), transparent); animation: scanMove 4s infinite linear; }
+        .code-bracket { position: absolute; color: rgba(255,123,114,0.2); font-family: 'Courier New', monospace; font-size: 24px; font-weight: bold; animation: bracketFloat 30s infinite ease-in-out; }
+        .connection-line { position: absolute; height: 1px; background: linear-gradient(90deg, transparent, rgba(88,166,255,0.2), transparent); animation: connectPulse 6s infinite ease-in-out; }
+
+        @keyframes floatParticle { 0% {transform: translateY(100vh) rotate(0); opacity:0;} 10%,90% {opacity:.3;} 100% {transform: translateY(-100px) rotate(360deg); opacity:0;} }
+        @keyframes rainFall { 0% {transform: translateY(-100px); opacity:0;} 10%,90% {opacity:.6;} 100% {transform: translateY(100vh); opacity:0;} }
+        @keyframes gridMove { 0% {transform: translateX(-100%) translateY(-100%);} 100% {transform: translateX(100%) translateY(100%);} }
+        @keyframes pulseOrb { 0%,100% {transform: scale(1); opacity:.1;} 50% {transform: scale(1.8); opacity:.3;} }
+        @keyframes scanMove { 0% {transform: translateY(-100vh);} 100% {transform: translateY(100vh);} }
+        @keyframes bracketFloat { 0%,100% {transform: translate(0,0) rotate(0); opacity:.1;} 25% {transform: translate(100px,50px) rotate(90deg); opacity:.3;} 50% {transform: translate(50px,100px) rotate(180deg); opacity:.1;} 75% {transform: translate(-50px,150px) rotate(270deg); opacity:.3;} }
+        @keyframes connectPulse { 0%,100% {opacity:.1; transform: scaleX(.5);} 50% {opacity:.4; transform: scaleX(1);} }
+
+        .content-card { background: rgba(22, 27, 34, 0.8); backdrop-filter: blur(10px); border: 1px solid #30363d; border-radius: 10px; transition: all 0.3s ease; }
+        .content-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); border-color: #58a6ff; }
+
+        /* Mobile sidebar */
+        @media (max-width: 768px) {
+            .sidebar { position: fixed; z-index: 1050; width: 250px; left: -250px; transition: all 0.3s; background-color: rgba(13,17,23,0.95); }
+            .sidebar.active { left: 0; }
+            .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1040; }
+            .overlay.active { display:block; }
+            .particle, .binary-rain, .code-bracket { animation-duration: 40s; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg" id="animatedBg"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark px-3 d-flex justify-content-between">
+        <div class="d-flex align-items-center">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo me-2">
+            <a class="navbar-brand fw-bold text-info" href="">Netcom Limited Systems</a>
+        </div>
+        {% if request.user.is_authenticated and request.user.is_staff %}
+                {% block admin_content %}{% endblock %}
+                <script>
+                    window.location.href = "{% url 'admin:index' %}";
+                </script> 
+        {% endif %}
+        {% if not user.is_authenticated %}
+            <div>
+                <a href="{% url 'home' %}" class="btn btn-outline-primary me-2">Home</a>
+                <a href="{% url 'login' %}" class="btn btn-outline-info me-2">Login</a>
+                <a href="{% url 'register' %}" class="btn btn-info me-2">Register</a>
+            </div>
+        {% else %}
+            <div class="d-flex align-items-center">
+                 <!-- <a href="{% url 'home' %}" class="btn btn-outline-primary me-2">Home</a>
+                <a href="{% url  'logout' %}" class="btn btn-outline-danger me-2">Exit</a> -->
+                <!-- User Profile -->
+                <div class="user-profile me-3">
+                    <img src="{{ user.account_profile.avatar.url }}" alt="User Avatar">
+                    <!-- <span>{{ user.username }}</span> -->
+                </div>
+                <!-- Sidebar toggle for mobile -->
+                <button class="btn btn-outline-info d-md-none" id="sidebarToggle" title="Open sidebar" aria-label="Open sidebar">
+                    <i class="bi bi-list" aria-hidden="true"></i>
+                    <span class="visually-hidden">Open sidebar</span>
+                </button>
+            </div>
+        {% endif %}
+    </nav>
+
+    <!-- Layout -->
+    <div class="container-fluid">
+        <div class="row">
+            {% if user.is_authenticated %}
+                <!-- Sidebar -->
+                <div class="col-md-2 sidebar p-3" id="sidebar">
+                    <h5 class="text-info mb-4"><i class="bi bi-stars me-2"></i>Menu</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2">{% auth_link 'home' 'bi-house-door-fill' 'Home' %}</li>
+                        <li class="nav-item mb-2">{% auth_link 'courses' 'bi-journal-code' 'Courses' %}</li>
+                        <li class="nav-item mb-2">{% auth_link 'blog' 'bi-newspaper' 'Blog' %}</li>
+                        <li class="nav-item mb-2">{% auth_link 'cybersecurity' 'bi-shield-lock-fill' 'Cybersecurity' %}</li>
+                        <li class="nav-item mb-2">{% auth_link 'software' 'bi-laptop' 'Software Dev' %}</li>
+                        <li class="nav-item mb-2">{% auth_link 'profile' 'bi-person-circle' 'Profile' %}</li>
+                        <li class="nav-item mb-2">{% auth_link 'account_settings' 'bi-gear-fill' 'Settings' %}</li>
+                        <li class="nav-item mb-2">{% auth_logout %}</li>
+                    </ul>
+                </div>
+                <!-- Authenticated Content -->
+                <div class="col-md-10 content">
+                    {% block auth_content %}{% endblock %}
+                </div>
+            {% else %}
+                <!-- Guest Content -->
+                <div class="col-12 content">
+                    {% block guest_content %}{% endblock %}
+                </div>
+            {% endif %}
+            
+
+        </div>
+    </div>
+
+    <!-- Overlay for mobile -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Background Script -->
+    <script>
+        const animatedBg = document.getElementById('animatedBg');
+
+        function createParticles(){for(let i=0;i<25;i++){const p=document.createElement('div');p.className='particle';const s=Math.random()*6+2;const l=Math.random()*100;const d=Math.random()*20;p.style.width=`${s}px`;p.style.height=`${s}px`;p.style.left=`${l}vw`;p.style.animationDelay=`${d}s`;p.style.animationDuration=`${15+Math.random()*15}s`;animatedBg.appendChild(p);}}
+        function createBinaryRain(){for(let i=0;i<30;i++){const b=document.createElement('div');b.className='binary-rain';b.textContent=Math.random()>0.5?'1':'0';b.style.left=`${Math.random()*100}vw`;b.style.animationDelay=`${Math.random()*15}s`;b.style.animationDuration=`${10+Math.random()*10}s`;animatedBg.appendChild(b);}}
+        function createGridLines(){for(let i=0;i<8;i++){const g=document.createElement('div');g.className='grid-line';g.style.width=`${Math.random()*200+100}px`;g.style.height='1px';g.style.top=`${Math.random()*100}vh`;g.style.left=`${Math.random()*100}vw`;g.style.transform=`rotate(${Math.random()*360}deg)`;g.style.animationDelay=`${Math.random()*25}s`;animatedBg.appendChild(g);}}
+        function createPulseOrbs(){for(let i=0;i<6;i++){const o=document.createElement('div');o.className='pulse-orb';o.style.width=o.style.height=`${Math.random()*150+50}px`;o.style.top=`${Math.random()*100}vh`;o.style.left=`${Math.random()*100}vw`;o.style.animationDelay=`${Math.random()*8}s`;animatedBg.appendChild(o);}}
+        function createScanLines(){for(let i=0;i<3;i++){const s=document.createElement('div');s.className='scan-line';s.style.animationDelay=`${Math.random()*4}s`;animatedBg.appendChild(s);}}
+        function createCodeBrackets(){const br=['{','}','[',']','(',')','<','>'];for(let i=0;i<12;i++){const b=document.createElement('div');b.className='code-bracket';b.textContent=br[Math.floor(Math.random()*br.length)];b.style.top=`${Math.random()*100}vh`;b.style.left=`${Math.random()*100}vw`;b.style.animationDelay=`${Math.random()*30}s`;b.style.animationDuration=`${20+Math.random()*20}s`;animatedBg.appendChild(b);}}
+        function createConnectionLines(){for(let i=0;i<15;i++){const l=document.createElement('div');l.className='connection-line';l.style.width=`${Math.random()*300+100}px`;l.style.top=`${Math.random()*100}vh`;l.style.left=`${Math.random()*100}vw`;l.style.transform=`rotate(${Math.random()*360}deg)`;l.style.animationDelay=`${Math.random()*6}s`;animatedBg.appendChild(l);}}
+
+        function initBackground(){createParticles();createBinaryRain();createGridLines();createPulseOrbs();createScanLines();createCodeBrackets();createConnectionLines();}
+        document.addEventListener('DOMContentLoaded', initBackground);
+
+        const sidebar=document.getElementById("sidebar");const sidebarToggle=document.getElementById("sidebarToggle");const overlay=document.getElementById("overlay");
+        if(sidebarToggle){sidebarToggle.addEventListener("click",()=>{sidebar.classList.toggle("active");overlay.classList.toggle("active");});}
+        if(overlay){overlay.addEventListener("click",()=>{sidebar.classList.remove("active");overlay.classList.remove("active");});}
+    </script>
+</body>
+</html>

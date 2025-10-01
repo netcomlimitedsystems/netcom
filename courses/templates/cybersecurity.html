@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block auth_content %}
+<div class="content-card p-4 mb-4">
+    <h1 class="text-success"><i class="bi bi-shield-lock-fill me-2"></i>Cybersecurity</h1>
+    <p class="lead">Learn how to defend, detect, and respond to modern cyber threats.</p>
+</div>
+<div class="row mt-4">
+    <div class="col-md-4 mb-4">
+        <div class="content-card p-4 h-100 text-center">
+            <i class="bi bi-bug-fill text-danger display-4 mb-3"></i>
+            <h4>Ethical Hacking</h4>
+            <p>Gain hands-on skills in penetration testing and vulnerability assessment.</p>
+        </div>
+    </div>
+     <div class="col-md-4 mb-4">
+            <div class="content-card p-4 h-100 text-center">
+                <i class="bi bi-cloud-shield-fill display-4 mb-3 text-info"></i>
+                <h4>Cloud Security</h4>
+                <p>Secure AWS/Azure/GCP workloads, IAM, and cloud-native defenses.</p>
+                <a href="{% url 'cloud' %}" class="btn btn-sm btn-outline-info mt-3">Explore</a>
+            </div>
+        </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="content-card p-4 h-100 text-center">
+            <i class="bi bi-lock-fill text-primary display-4 mb-3"></i>
+            <h4>Network Security</h4>
+            <p>Understand firewalls, intrusion detection, and secure communication protocols.</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="content-card p-4 h-100 text-center">
+            <i class="bi bi-database-fill text-danger display-4 mb-3"></i>
+            <h4>SQL Injection</h4>
+            <p>Hands-on labs to identify, exploit, and remediate SQL injection vulnerabilities in web apps and APIs.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block guest_content %}
+<div class="content-card p-4 mb-4">
+    <h1 class="text-success"><i class="bi bi-shield-lock-fill me-2"></i>Cybersecurity</h1>
+    <p class="lead">Preview modules below — sign in to unlock full content.</p>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4 mb-4">
+        <a href="{% url 'login' %}" class="text-decoration-none">
+            <div class="content-card p-4 h-100 text-center position-relative overflow-hidden guest-card">
+                <div class="blur-content">
+                    <i class="bi bi-bug-fill text-danger display-4 mb-3"></i>
+                    <h4>Ethical Hacking</h4>
+                    <p>Gain hands-on skills in penetration testing and vulnerability assessment.</p>
+                </div>
+                <div class="overlay">
+                    <i class="bi bi-lock-fill text-white display-6 mb-2"></i>
+                    <span class="text-white small">Login to Access</span>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <a href="{% url 'register' %}" class="text-decoration-none">
+            <div class="content-card p-4 h-100 text-center position-relative overflow-hidden guest-card">
+                <div class="blur-content">
+                    <i class="bi bi-lock-fill text-primary display-4 mb-3"></i>
+                    <h4>Network Security</h4>
+                    <p>Understand firewalls, intrusion detection, and secure communication protocols.</p>
+                </div>
+                <div class="overlay">
+                    <i class="bi bi-person-plus text-white display-6 mb-2"></i>
+                    <span class="text-white small">Register to Learn</span>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <a href="{% url 'login' %}" class="text-decoration-none">
+            <div class="content-card p-4 h-100 text-center position-relative overflow-hidden guest-card">
+                <div class="blur-content">
+                    <i class="bi bi-database-fill text-danger display-4 mb-3"></i>
+                    <h4>SQL Injection</h4>
+                    <p>Hands-on labs to identify, exploit, and remediate SQL injection vulnerabilities.</p>
+                </div>
+                <div class="overlay">
+                    <i class="bi bi-lock-fill text-white display-6 mb-2"></i>
+                    <span class="text-white small">Sign in to Continue</span>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<style>
+    .blur-content {
+        filter: blur(4px);
+        pointer-events: none;
+        user-select: none;
+    }
+    .guest-card .overlay {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.6);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0.5rem;
+    }
+    .guest-card:hover .overlay {
+        background: rgba(0,0,0,0.75);
+    }
+</style>
+{% endblock %}
