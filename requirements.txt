@@ -8,6 +8,8 @@ crispy-bootstrap5==0.7
 # Image handling (for avatars, blog images, etc.)
 Pillow>=11.0.0
 
+pytest==8.4.2
+pytest-django==4.8.0
 
 
 
