@@ -1,9 +1,6 @@
 # Core framework
 Django==4.2.7
 
-# Database (Django uses SQLite by default, but psycopg2 can be used for PostgreSQL)
-psycopg2-binary==2.9.9   # Only if you’re using PostgreSQL
-
 # Forms & UI
 django-crispy-forms==2.3
 crispy-bootstrap5==0.7
@@ -11,15 +8,8 @@ crispy-bootstrap5==0.7
 # Image handling (for avatars, blog images, etc.)
 Pillow==10.2.0
 
-# Timezone / date utilities
-pytz==2023.3.post1
-tzdata==2023.3
+
 
 # Environment variables (optional, but recommended if using secrets/settings split)
 python-decouple==3.8
 
-# Gunicorn for deployment (if deploying to Linux server)
-gunicorn==21.2.0
-
-# Static file handling in production
-whitenoise==6.6.0
