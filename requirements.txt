@@ -10,6 +10,4 @@ Pillow==10.2.0
 
 
 
-# Environment variables (optional, but recommended if using secrets/settings split)
-python-decouple==3.8
 
