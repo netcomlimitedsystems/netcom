@@ -6,7 +6,7 @@ django-crispy-forms==2.3
 crispy-bootstrap5==0.7
 
 # Image handling (for avatars, blog images, etc.)
-Pillow==10.2.0
+Pillow>=11.0.0
 
 
 
